@@ -1,0 +1,23 @@
+<!--
+User confrmation page before deleting a cert
+-->
+<apex:page standardController="Account" extensions="DeleteCertsController" showHeader="true" sidebar="true" cache="false" tabStyle="Account" >
+<apex:sectionHeader title="Delete Certificate" subtitle="{!Account.Name}"/>
+<apex:form id="frm">
+    <apex:pageMessages />
+    <apex:pageBlock title="User Confirmation">
+        <apex:outputPanel rendered="{!!isNotValid}">
+            <apex:outputText value="Are you sure you want to delete {!Account.Name}?"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:commandButton value="Yes" action="{!deleteAccount}"  reRender="frm"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:commandButton value="No" action="{!cancel}" reRender="frm" />
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!isNotValid}">
+            {!strMessage}<br/><br/>
+        <apex:commandButton value="Go Back" action="{!cancel}" reRender="frm" />
+        </apex:outputPanel>
+    </apex:pageBlock>
+    <style>
+     .btn{ width:50px;}
+     </style>
+</apex:form>
+</apex:page>

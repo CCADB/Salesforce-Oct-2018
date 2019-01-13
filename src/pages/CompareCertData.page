@@ -1,0 +1,72 @@
+<apex:page controller="CompareCertData" showHeader="false" sideBar="false" readOnly="true">
+<apex:sectionHeader title="Comparison between CCADB and certdata.txt"/>
+
+<style type="text/css">
+    .pbTitle {
+        white-space: nowrap
+    }
+</style>
+
+<apex:form >
+    <apex:pageBlock title="Trust Bits Different between CCADB and certdata.txt ({!lstWrapperTrustBits.size})">
+        <apex:pageBlockTable value="{!lstWrapperTrustBits}" var="result">
+            <apex:column headerValue="Certiticate Name">
+                <apex:outputLink value="/{!result.objAccount.Id}" target="_blank">{!result.objAccount.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Mozilla Status" value="{!result.objAccount.Status__c}"/>
+            <apex:column headerValue="Mozilla Trust Bits" value="{!result.objAccount.Trust_Bits__c}"/>           
+            <!-- <apex:column headerValue="CCADB Websites Trust Bit" value="{!result.CCADBtrustWeb}"/>
+            <apex:column headerValue="CCADB Email Trust Bit" value="{!result.CCADBtrustEmail}"/> -->
+            <apex:column headerValue="certdata trustEmail" value="{!result.trustEmail}"/>
+            <apex:column headerValue="certdata trustWeb" value="{!result.trustWeb}"/>                       
+            <apex:column headerValue="SHA-256 Fingerprint" value="{!result.sha256}"/>
+            <apex:column headerValue="Serial Number " value="{!result.serialNumber}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="In certdata.txt but not in CCADB ({!lstWrapperMResult.size})"><!-- {!countAllJSON}-->
+        <apex:pageBlockTable value="{!lstWrapperMResult}" var="result">
+            <apex:column headerValue="Common Name">
+                <apex:outputLink value="/{!result.objAccount.Id}" target="_blank" rendered="{!result.objAccount.Name != null}">{!result.objAccount.Name}</apex:outputLink>
+                <apex:outputLabel rendered="{!result.objAccount.Name == null}">{!result.CommonName}</apex:outputLabel>
+            </apex:column>
+            <apex:column headerValue="Mozilla Status" value="{!result.objAccount.Status__c}"/>
+            <apex:column headerValue="Mozilla Trust Bits" value="{!result.objAccount.Trust_Bits__c}"/>  
+            <apex:column headerValue="certdata trustEmail" value="{!result.trustEmail}"/>
+            <apex:column headerValue="certdata trustWeb" value="{!result.trustWeb}"/>            
+            <apex:column headerValue="SHA-256 Fingerprint" value="{!result.sha256}"/>
+            <apex:column headerValue="Serial Number " value="{!result.serialNumber}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+    
+    <apex:pageBlock title="In CCADB but not in certdata.txt ({!lstofRootCertsNotFoundInNSS.size})">
+        <apex:pageBlockTable value="{!lstofRootCertsNotFoundInNSS}" var="result">
+            <apex:column headerValue="Certiticate Name">
+                <apex:outputLink value="/{!result.Id}" target="_blank">{!result.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Mozilla Status" value="{!result.Status__c}"/>
+            <apex:column headerValue="Mozilla Trust Bits" value="{!result.Trust_Bits__c}"/>
+            <apex:column headerValue="SHA-256 Fingerprint" value="{!result.SHA_256_Fingerprint__c}"/>
+            <apex:column headerValue="Serial Number " value="{!result.Certificate_Serial_Number__c}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Values consistent between CCADB and certdata.txt ({!lstWrapperConsitent.size})">
+        <apex:pageBlockTable value="{!lstWrapperConsitent}" var="result">
+            <apex:column headerValue="Certiticate Name">
+                <apex:outputLink value="/{!result.objAccount.Id}" target="_blank">{!result.objAccount.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Mozilla Status" value="{!result.objAccount.Status__c}"/>
+            <apex:column headerValue="Mozilla Trust Bits" value="{!result.objAccount.Trust_Bits__c}"/> 
+            <apex:column headerValue="certdata trustEmail" value="{!result.trustEmail}"/>
+            <apex:column headerValue="certdata trustWeb" value="{!result.trustWeb}"/>           
+            <!-- apex:column headerValue="CCADB Websites Trust Bit" value="{!result.CCADBtrustWeb}"/>            
+            <apex:column headerValue="CCADB Email Trust Bit" value="{!result.CCADBtrustEmail}"/> -->
+            <apex:column headerValue="SHA-256 Fingerprint" value="{!result.sha256}"/>
+            <apex:column headerValue="Serial Number " value="{!result.serialNumber}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+</apex:form>
+</apex:page>
